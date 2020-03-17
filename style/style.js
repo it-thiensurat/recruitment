@@ -18,8 +18,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: COMPONENT_HIGHT,
-        backgroundColor: 'white',
         width: DEVICE_WIDTH - 40,
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+        borderRadius: COMPONENT_HIGHT / 2
+    },
+    input: {
+        paddingLeft: 15,
+        alignItems: 'center',
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH - 20,
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+        borderRadius: COMPONENT_HIGHT / 2
+    },
+    inputSmall: {
+        paddingLeft: 15,
+        alignItems: 'center',
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH / 2,
+        backgroundColor: 'white',
         justifyContent: 'space-between',
         borderRadius: COMPONENT_HIGHT / 2
     },
@@ -27,6 +45,18 @@ const styles = StyleSheet.create({
         width: DEVICE_WIDTH - 80,
         height: COMPONENT_HIGHT - 5,
         backgroundColor: 'transparent',
+    },
+    mainButton: {
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH - 40,
+        backgroundColor: secondaryColor,
+        borderRadius: COMPONENT_HIGHT / 2
+    },
+    secondaryButton: {
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH - 20,
+        backgroundColor: primaryColor,
+        borderRadius: COMPONENT_HIGHT / 2
     },
     shadow: {
         shadowOffset: {
@@ -43,6 +73,28 @@ const styles = StyleSheet.create({
     },
     marginBetweenVertical: {
         height: 10
+    },
+    bold: {
+        fontFamily: 'DBMed'
+    },
+    positionBottom: {
+        bottom: 0,
+        position: 'absolute'
+    },
+    customTabContainner: {
+        position: 'absolute',
+        top: -20,
+        bottom: 0,
+        width: 70,
+        height: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomTab: {
+        top: 5,
+        width: 50,
+        alignItems: 'center', 
+        justifyContent: 'center',
     }
 })
 

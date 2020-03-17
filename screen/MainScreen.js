@@ -1,6 +1,7 @@
 import React from 'react'
 import {
-    View
+    View,
+    Text,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -11,6 +12,7 @@ import {
     primaryColor,
     secondaryColor
 } from '../utils/contants'
+import styles from '../style/style'
 
 import Register from './tabs/RegisterScreen'
 import Profile from './tabs/ProfileScreen'
@@ -21,34 +23,43 @@ export default function MainTab() {
     return (
         <Tab.Navigator
             initialRouteName="Register"
-            inactiveColor={lightColor}
+            inactiveColor={darkColor}
             activeColor={secondaryColor}
             barStyle={{ backgroundColor: primaryColor }}>
             <Tab.Screen
                 name="Register"
                 component={Register}
                 options={{
-                    tabBarLabel: 'รับสมัคร',
+                    tabBarLabel: '',
                     tabBarIcon: ({ color }) => (
-                        <Icon name="user-plus" color={color} size={20} />
+                        <View style={[ styles.bottomTab ]}>
+                            <Icon name="user-plus" color={color} size={20} />
+                            <Text style={[{ color: color, fontSize: 18 }]}>{`รับสมัคร`}</Text>
+                        </View>
                     ),
                 }} />
             <Tab.Screen
                 name="List"
                 component={Profile}
                 options={{
-                    tabBarLabel: 'รายชื่อ',
+                    tabBarLabel: '',
                     tabBarIcon: ({ color }) => (
-                        <Icon name="list" color={color} size={20} />
+                        <View style={[ styles.bottomTab ]}>
+                            <Icon name="list" color={color} size={20} />
+                            <Text style={[{ color: color, fontSize: 18 }]}>{`รายชื่อ`}</Text>
+                        </View>
                     ),
                 }} />
             <Tab.Screen
                 name="Profile"
                 component={Profile}
                 options={{
-                    tabBarLabel: 'โปรไฟล์',
+                    tabBarLabel: '',
                     tabBarIcon: ({ color }) => (
-                        <Icon name="user" color={color} size={20} />
+                        <View style={[ styles.bottomTab ]}>
+                            <Icon name="user" color={color} size={20} />
+                            <Text style={[{ color: color, fontSize: 18 }]}>{`โปรไฟล์`}</Text>
+                        </View>
                     ),
                 }} />
         </Tab.Navigator>

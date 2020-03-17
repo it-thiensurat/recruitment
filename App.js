@@ -8,19 +8,32 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   YellowBox,
-  View,
-  Text,
-  StatusBar,
+  Platform,
 } from 'react-native';
 console.disableYellowBox = true
 import { connect } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider as PaperProvider } from 'react-native-paper'
+
+import {
+  setCustomView,
+  setCustomTextInput,
+  setCustomText,
+  setCustomImage,
+  setCustomTouchableOpacity,
+} from 'react-native-global-props'
+
+const customTextProps = {
+  style: {
+    fontSize: 22,
+    fontFamily: Platform.OS == 'android' ? 'DBYord' : 'DB Yord X',
+  }
+};
+
+setCustomTextInput(customTextProps);
+setCustomText(customTextProps);
 
 const Stack = createStackNavigator();
 
@@ -30,7 +43,8 @@ import Login from './screen/LoginScreen'
 function MyStack() {
   return (
     <Stack.Navigator
-      headerMode='none'>
+      headerMode='none'
+      initialRouteName='Main'>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>

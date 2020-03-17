@@ -3,10 +3,11 @@ import {
     View,
     Text,
     Image,
-    TextInput
+    TextInput,
+    TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import Icon from 'react-native-vector-icons/dist/FontAwesome'
 
 import {
     darkColor,
@@ -46,6 +47,13 @@ class LoginScreen extends React.Component {
                         onBlur={false}
                         autoCapitalize={false}
                         onSubmitEditing={() => null} />
+                </View>
+                <View style={styles.marginBetweenVertical}></View>
+                <TouchableOpacity style={[styles.mainButton, styles.center]}>
+                    <Text style={{ color: primaryColor, fontSize: 24 }}>{`เข้าสู่ระบบ`}</Text>
+                </TouchableOpacity>
+                <View style={[styles.positionBottom, { alignItems: 'center', justifyContent: 'center' }]}>
+                    <Text style={{ fontSize: 16, color: lightColor }}>{`Copyright © 2020 by Thiensurat Public Company Limited.`}</Text>
                 </View>
             </View>
         )

@@ -21,7 +21,10 @@
     "navigationbar-react-native": "0.0.5",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-flexi-radio-button": "^0.2.2",
     "react-native-gesture-handler": "^1.6.0",
+    "react-native-global-props": "^1.1.5",
+    "react-native-image-crop-picker": "^0.28.0",
     "react-native-orientation-locker": "^1.1.8",
     "react-native-paper": "^3.6.0",
     "react-native-qrcode-svg": "^6.0.3",
@@ -46,5 +49,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }
