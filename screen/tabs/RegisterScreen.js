@@ -201,40 +201,24 @@ class RegisterScreen extends React.Component {
                                 <Text style={{ color: primaryColor, fontSize: 20 }}>{`ตั้งบูท`}</Text>
                             </RadioButton>
                         </RadioGroup>
-                        <TextInput style={[styles.input, styles.shadow]}
-                            ref={(input) => { this.channelDetail = input; }}
-                            placeholder='ระบุลิ้งค์เฟซบุ๊ค, ลิ้งค์ยูทูบ หรือชื่อตลาดที่ออกบูท'
-                            returnKeyType='next'
-                            onBlur={false}
-                            autoCapitalize={false} />
+                        {
+                            this.state.channel == -1 || this.state.channel == 2 ?
+                                null
+                                :
+                                <TextInput style={[styles.input, styles.shadow]}
+                                    ref={(input) => { this.channelDetail = input; }}
+                                    placeholder='ระบุลิ้งค์เฟซบุ๊ค, ลิ้งค์ยูทูบ หรือชื่อตลาดที่ออกบูท'
+                                    returnKeyType='next'
+                                    onBlur={false}
+                                    autoCapitalize={false} />
+                        }
+
                         <View style={styles.marginBetweenVertical}></View>
                         {
                             this.state.channel == 2 ?
                                 <View>
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
-                                        <Text style={{ fontSize: 20 }}>{`เลือกตลาดที่ออกบูท`}</Text>
-                                        <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
-                                    </View>
-                                    <View style={[styles.input, styles.shadow, styles.center]}>
-                                        <Picker
-                                            mode="dropdown"
-                                            placeholder="เลือกตำแหน่ง"
-                                            textStyle={{ fontSize: 18 }}
-                                            itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
-                                            itemTextStyle={{ color: 'gray', fontSize: 18 }}
-                                            style={[{ color: 'gray', width: '100%' }]}
-                                            selectedValue={this.state.position}
-                                            onValueChange={(value, index) => null} >
-                                            {/* {
-                                                    this.state.province.map((value, index) => {
-                                                        return (<Picker.Item key={index} label={value.provinceName} value={value.provinceId} />);
-                                                    })
-                                                } */}
-                                        </Picker>
-                                    </View>
-                                    <View style={styles.marginBetweenVertical}></View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
-                                        <Text style={{ fontSize: 20 }}>{`กรณีออกบูทตลาดที่ไม่มีในระบบ`}</Text>
+                                        <Text style={{ fontSize: 20 }}>{`กรณีออกบูทตลาดนัด`}</Text>
                                         <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
                                     </View>
                                     <TextInput style={[styles.input, styles.shadow]}
