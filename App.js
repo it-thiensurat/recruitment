@@ -8,8 +8,10 @@
 
 import React from 'react';
 import {
-  YellowBox,
+  View,
   Platform,
+  YellowBox,
+  ActivityIndicator
 } from 'react-native';
 console.disableYellowBox = true
 import { connect } from 'react-redux'
@@ -35,16 +37,19 @@ const customTextProps = {
 setCustomTextInput(customTextProps);
 setCustomText(customTextProps);
 
-const Stack = createStackNavigator();
-
 import Main from './screen/MainScreen'
 import Login from './screen/LoginScreen'
+import Splash from './screen/SplashScreen'
 
+import styles from './style/style'
+
+const Stack = createStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator
       headerMode='none'
-      initialRouteName='Main'>
+      initialRouteName='Splash'>
+      <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>
@@ -52,19 +57,31 @@ function MyStack() {
 }
 
 class App extends React.Component {
+
   render() {
+
+    const props = this.props.reducer
+
     return (
       <NavigationContainer>
         <PaperProvider>
           <MyStack />
         </PaperProvider>
+        {
+          props.indicator ?
+            <View style={[styles.loadingIndicator]}>
+              <ActivityIndicator size='large' color={secondaryColor} />
+            </View>
+            :
+            null
+        }
       </NavigationContainer>
     )
   }
 };
 
 const mapStateToProps = (state) => ({
-
+  reducer: state.fetchReducer
 })
 
 const mapDispatchToProps = {

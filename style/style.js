@@ -1,7 +1,7 @@
-import { 
-    Platform, 
+import {
+    Platform,
     StyleSheet,
-    Dimensions 
+    Dimensions
 } from 'react-native'
 import {
     darkColor,
@@ -93,8 +93,18 @@ const styles = StyleSheet.create({
     bottomTab: {
         top: 5,
         width: 50,
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center',
+    },
+    loadingIndicator: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     }
 })
 

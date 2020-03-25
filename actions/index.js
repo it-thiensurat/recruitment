@@ -5,6 +5,9 @@ import {
     CLEAR_USERINFO,
     USER_TOKEN,
     CLEAR_TOKEN,
+    SAVE_PROVINCE,
+    SAVE_COMPANY,
+    SAVE_TITLE
 } from '../utils/contants'
 
 /**
@@ -79,6 +82,57 @@ export const clearToken = (data) => ({
     type: CLEAR_TOKEN
 })
 
+/**
+ * End
+ */
+
+/**
+ * Province
+ */
+export function provinceControll(data) {
+    return (dispatch) => {
+        dispatch(saveProvince(data))
+    }
+}
+
+export const saveProvince = (data) => ({
+    type: SAVE_PROVINCE,
+    payload: data
+})
+/**
+ * End
+ */
+
+ /**
+ * Company
+ */
+export function companyControll(data) {
+    return (dispatch) => {
+        dispatch(saveCompany(data))
+    }
+}
+
+export const saveCompany = (data) => ({
+    type: SAVE_COMPANY,
+    payload: data
+})
+/**
+ * End
+ */
+
+/**
+ * Title
+ */
+export function titleControll(data) {
+    return (dispatch) => {
+        dispatch(saveTitle(data))
+    }
+}
+
+export const saveTitle = (data) => ({
+    type: SAVE_TITLE,
+    payload: data
+})
 /**
  * End
  */

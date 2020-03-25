@@ -15,13 +15,15 @@ export const lightColor         = '#d2fafb'
 /**
  * API
  */
-export const SERVER         = 'UAT' // Production
-export const BASEURL        = 'http://toss.thiensurat.co.th'
-export const LOGIN_URL      = '/ServicesPHP/' + SERVER + '/HR/Authen'
-export const POSITION_URL   = '/ServicesPHP/' + SERVER + '/HR/Position'
-export const PROVINCE_URL   = '/ServicesPHP/' + SERVER + '/HR/Province'
-export const DISTRICT_URL   = '/ServicesPHP/' + SERVER + '/HR/District'
-export const SUBDISTRICT_URL   = '/ServicesPHP/' + SERVER + '/HR/SubDistrict'
+export const SERVER             = 'UAT' // Production
+export const BASEURL            = 'http://toss.thiensurat.co.th'
+export const LOGIN_URL          = '/ServicesPHP/' + SERVER + '/HR/Authen'
+export const POSITION_URL       = '/ServicesPHP/' + SERVER + '/HR/Position'
+export const PROVINCE_URL       = '/ServicesPHP/' + SERVER + '/HR/Province'
+export const DISTRICT_URL       = '/ServicesPHP/' + SERVER + '/HR/District'
+export const SUBDISTRICT_URL    = '/ServicesPHP/' + SERVER + '/HR/SubDistrict'
+export const COMPANY_URL        = '/ServicesPHP/' + SERVER + '/HR/Company'
+export const TITLE_URL          = '/ServicesPHP/' + SERVER + '/HR/Title'
 /**
  * End
  */
@@ -35,6 +37,9 @@ export const SAVE_USERINFOR     = 'SAVE_USERINFOR'
 export const CLEAR_USERINFO     = 'CLEAR_USERINFO'
 export const USER_TOKEN         = 'USER_TOKEN'
 export const CLEAR_TOKEN        = 'CLEAR_TOKEN'
+export const SAVE_PROVINCE      = 'SAVE_PROVINCE'
+export const SAVE_COMPANY       = 'SAVE_COMPANY'
+export const SAVE_TITLE         = 'SAVE_TITLE'
 /**
  * End
  */
