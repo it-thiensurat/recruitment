@@ -6,6 +6,7 @@ export const TOKEN_KEY          = 'TOKEN_KEY'
  */
 export const primaryColor       = 'rgba(81, 43, 88, 1)'
 export const secondaryColor     = '#fe346e'
+export const tertiary           = '#c39bd3'
 export const darkColor          = '#2c003e'
 export const lightColor         = '#d2fafb'
  /**
@@ -24,6 +25,7 @@ export const DISTRICT_URL       = '/ServicesPHP/' + SERVER + '/HR/District'
 export const SUBDISTRICT_URL    = '/ServicesPHP/' + SERVER + '/HR/SubDistrict'
 export const COMPANY_URL        = '/ServicesPHP/' + SERVER + '/HR/Company'
 export const TITLE_URL          = '/ServicesPHP/' + SERVER + '/HR/Title'
+export const REGISTER           = '/ServicesPHP/' + SERVER + '/HR/Register'
 /**
  * End
  */
@@ -40,6 +42,7 @@ export const CLEAR_TOKEN        = 'CLEAR_TOKEN'
 export const SAVE_PROVINCE      = 'SAVE_PROVINCE'
 export const SAVE_COMPANY       = 'SAVE_COMPANY'
 export const SAVE_TITLE         = 'SAVE_TITLE'
+export const SAVE_POSITION      = 'SAVE_POSITION'
 /**
  * End
  */

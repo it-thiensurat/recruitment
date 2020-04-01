@@ -7,7 +7,8 @@ import {
     CLEAR_TOKEN,
     SAVE_PROVINCE,
     SAVE_COMPANY,
-    SAVE_TITLE
+    SAVE_TITLE,
+    SAVE_POSITION
 } from '../utils/contants'
 
 const initialState = {
@@ -16,7 +17,8 @@ const initialState = {
     token: '',
     province: [],
     company: [],
-    title: []
+    title: [],
+    position: []
 }
 
 export default (state = initialState, action) => {
@@ -65,6 +67,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 title: action.payload
+            }
+        case SAVE_POSITION:
+            return {
+                ...state,
+                position: action.payload
             }
         default:
             return state

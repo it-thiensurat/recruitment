@@ -7,7 +7,8 @@ import {
     CLEAR_TOKEN,
     SAVE_PROVINCE,
     SAVE_COMPANY,
-    SAVE_TITLE
+    SAVE_TITLE,
+    SAVE_POSITION
 } from '../utils/contants'
 
 /**
@@ -131,6 +132,23 @@ export function titleControll(data) {
 
 export const saveTitle = (data) => ({
     type: SAVE_TITLE,
+    payload: data
+})
+/**
+ * End
+ */
+
+/**
+ * Position
+ */
+export function positionControll(data) {
+    return (dispatch) => {
+        dispatch(savePosition(data))
+    }
+}
+
+export const savePosition = (data) => ({
+    type: SAVE_POSITION,
     payload: data
 })
 /**

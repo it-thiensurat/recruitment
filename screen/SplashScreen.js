@@ -25,6 +25,7 @@ import {
     titleControll,
     companyControll,
     provinceControll,
+    positionControll
 } from '../actions'
 
 import {
@@ -33,7 +34,8 @@ import {
     BASEURL,
     TITLE_URL,
     COMPANY_URL,
-    PROVINCE_URL
+    PROVINCE_URL,
+    POSITION_URL
 } from '../utils/contants'
 
 import Helper from '../utils/Helper'
@@ -91,6 +93,23 @@ class SplashScreen extends React.Component {
         Helper.get(BASEURL + TITLE_URL, header, (results) => {
             if (results.status == 'SUCCESS') {
                 props.titleControll(results.data)
+            } else {
+                that.setState({ loading: false })
+                alert(`${results.message}`)
+            }
+        })
+    }
+
+    getPosition() {
+        let that = this
+        // that.setState({ loading: true })
+        const props = that.props
+        let header = {
+            'x-api-key': API_KEY
+        }
+        Helper.get(BASEURL + POSITION_URL, header, (results) => {
+            if (results.status == 'SUCCESS') {
+                props.positionControll(results.data)
                 that.setState({ loading: false })
             } else {
                 that.setState({ loading: false })
@@ -130,6 +149,7 @@ class SplashScreen extends React.Component {
         await this.getProvince()
         await this.getCompany()
         await this.getTitle()
+        await this.getPosition()
         await this.checkLogin()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
@@ -164,6 +184,7 @@ const mapDispatchToProps = {
     titleControll,
     companyControll,
     provinceControll,
+    positionControll
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

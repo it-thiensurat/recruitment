@@ -40,7 +40,7 @@ export default function MainTab() {
                 }} />
             <Tab.Screen
                 name="List"
-                component={Profile}
+                component={List}
                 options={{
                     tabBarLabel: '',
                     tabBarIcon: ({ color }) => (
