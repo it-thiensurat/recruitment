@@ -58,10 +58,13 @@ class RegisterScreen extends React.Component {
         companyName: '',
         positionId: '',
         positionName: '',
-        gallery: '',
+        gallery: "",
+        galleryup: "",
         title_data: [],
         district_data: [],
-        subdistrict_data: []
+        subdistrict_data: [],
+
+        ImageSource: ''
     }
 
     onSelectGender(index, value) {
@@ -591,7 +594,9 @@ class RegisterScreen extends React.Component {
                         }
                         <View style={styles.marginBetweenVertical}></View>
                         <TouchableOpacity style={[styles.secondaryButton, styles.center]}
-                            onPress={() => this.onSaveRegister()}>
+                            // onPress={() => 
+                            // this.onSaveRegister()}
+                            >
                             <Text style={[{ color: secondaryColor, fontSize: 26 }, styles.bold]}>{`ส่งข้อมูลการสมัคร`}</Text>
                         </TouchableOpacity>
                     </View>
