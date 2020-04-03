@@ -145,6 +145,7 @@ class LoginScreen extends React.Component {
                     <TextInput style={[styles.inputContainer]}
                         ref={(input) => { this.password = input; }}
                         placeholder='Password'
+                        keyboardType='number-pad'
                         returnKeyType='done'
                         onBlur={false}
                         autoCapitalize={false}

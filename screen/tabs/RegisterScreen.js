@@ -3,15 +3,19 @@ import {
     View,
     Text,
     Image,
+    ImageBackground,
+    TouchableOpacity,
     TextInput,
     ScrollView
 } from 'react-native'
+import axios from 'axios'
 import { connect } from 'react-redux'
 import { Picker } from "native-base"
 import ImagePicker from 'react-native-image-crop-picker'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
+import DateTimePicker from "react-native-modal-datetime-picker"
 
 import {
     darkColor,
@@ -30,9 +34,14 @@ import {
     REGISTER
 } from '../../utils/contants'
 
+import {
+    indicatorControll
+} from '../../actions'
+
 import styles from '../../style/style'
 import Helper from '../../utils/Helper'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+
+import Moment from 'moment'
 
 class RegisterScreen extends React.Component {
 
@@ -43,9 +52,9 @@ class RegisterScreen extends React.Component {
         lastName: '',
         gender: '',
         citizenId: '',
-        birthDate: '',
+        birthDate: new Date(),
         mobile: '',
-        location: -1,
+        location: '0',
         locationName: '',
         provinceId: '',
         provinceName: '',
@@ -55,16 +64,18 @@ class RegisterScreen extends React.Component {
         subDistrictName: '',
         zipcode: '',
         companyId: '',
+        companyCode: '',
         companyName: '',
         positionId: '',
         positionName: '',
         gallery: "",
         galleryup: "",
+        ImageSource: [],
         title_data: [],
         district_data: [],
         subdistrict_data: [],
-
-        ImageSource: ''
+        isDatePickerVisible: false,
+        showImage: ''
     }
 
     onSelectGender(index, value) {
@@ -81,7 +92,7 @@ class RegisterScreen extends React.Component {
             let title = props.title
             let title_arr = title.filter((item) => item.Id == value)
             this.setState({ titleId: value, titleName: title_arr[0].NameTh })
-            // alert(JSON.stringify(this.state.title_name))
+            // alert(JSON.stringify(this.state.titleName))
         } else {
             this.setState({ titleId: '', titleName: '' })
         }
@@ -152,10 +163,11 @@ class RegisterScreen extends React.Component {
             const props = this.props.reducer
             let company = props.company
             let company_arr = company.filter((item) => item.CompanyId == value)
-            this.setState({ companyId: value, companyName: company_arr[0].CompanyTh })
-            // alert(JSON.stringify(this.state.company_name))
+            alert(JSON.stringify(company_arr))
+            this.setState({ companyId: value, companyCode: company_arr[0].companyCode, companyName: company_arr[0].CompanyTh })
+            // alert(JSON.stringify(this.state.companyName))
         } else {
-            this.setState({ companyId: '', companyName: '' })
+            this.setState({ companyId: '', companyCode: '', companyName: '' })
         }
     }
 
@@ -164,7 +176,7 @@ class RegisterScreen extends React.Component {
             const props = this.props.reducer
             let position = props.position
             let position_arr = position.filter((item) => item.Id == value)
-            this.setState({ positionId: value, positionName: position_arr[0].NameTh })
+            this.setState({ positionId: value, positionName: position_arr[0].NameTH })
             // alert(JSON.stringify(this.state.positionName))
         } else {
             this.setState({ positionId: '', positionName: '' })
@@ -176,86 +188,123 @@ class RegisterScreen extends React.Component {
             multiple: false,
             includeBase64: true
         }).then(images => {
-            console.log(images);
+            // console.log(images);
+            // alert(JSON.stringify(images));
+            let img = []
+            img.push({
+                url: images.path,
+                type: images.mime
+            })
             this.setState({
-                ImageSource: images.path,
-                ImageSourceBase64: images.data
+                ImageSource: [...this.state.ImageSource, ...img],
+                showImage: images.path
             });
         });
+    }
+
+    _showDateTimePicker = () => this.setState({ isDatePickerVisible: true });
+
+    _hideDateTimePicker = (date) => {
+        this.setState({
+            isDatePickerVisible: false,
+        });
+    }
+
+    _handleDatePicked = (date) => {
+        this.setState({
+            birthDate: date
+        });
+        this._hideDateTimePicker();
     }
 
     onSaveRegister() {
         let that = this
         const props = that.props
-        const { titleId,
-            titleName,
-            firstName,
-            lastName,
-            gender,
-            citizenId,
-            birthDate,
-            mobile,
-            location,
-            locationName,
-            provinceId,
-            provinceName,
-            districtId,
-            districtName,
-            subDistrictId,
-            subDistrictName,
-            zipcode,
-            companyId,
-            companyName,
-            positionId,
-            positionName,
-            gallery } = that.state
-        let header = {
-            // 'Authorization': '',
-            'x-api-key': API_KEY
-        }
-        let formData = new FormData();
-        formData.append('', titleId);
-        formData.append('', titleName);
-        formData.append('', firstName);
-        formData.append('', lastName);
-        formData.append('', gender);
-        formData.append('', citizenId);
-        formData.append('', birthDate);
-        formData.append('', mobile);
-        formData.append('', location);
-        formData.append('', locationName);
-        formData.append('', province_id);
-        formData.append('', province_name);
-        formData.append('', district_id);
-        formData.append('', district_name);
-        formData.append('', subDistrict_id);
-        formData.append('', subDistrict_name);
-        formData.append('', zipcode);
-        formData.append('', company_id);
-        formData.append('', company_name);
-        formData.append('', position_id);
-        formData.append('', position_name);
-        that.state.galleryup.map((v, i) => {
-            let gallerys = {
-              uri: v.path,
-              type: v.mime,
-              name: 'name_' + i + '.jpg',
-            };
-            formData.append('gallery[' + i + ']', gallerys);
-          });
 
-        props.indicatorControll(true)
-        Helper.post(BASEURL + REGISTER, formData, header, (results) => {
-            if (results.status == 'SUCCESS') {
-                props.tokenControll('save', results.token)
-                props.userInfoControll('save', results.data)
-                StorageService.set(TOKEN_KEY, results.token)
-                props.indicatorControll(false)
-                props.navigation.replace('Main')
-            } else {
-                props.indicatorControll(false)
-                alert(`${results.message}`)
-            }
+        let header = {
+            'Authorization': props.reducer.token,
+            'x-api-key': API_KEY,
+        }
+
+        if (that.state.titleId != '0' && that.state.firstName != '' && that.state.lastName != '' && that.state.citizenId != '') {
+
+            let formData = new FormData();
+            formData.append('titleId', that.state.titleId);
+            formData.append('titleName', that.state.titleName);
+            formData.append('firstName', that.state.firstName);
+            formData.append('lastName', that.state.lastName);
+            formData.append('citizenId', that.state.citizenId);
+            formData.append('birthDate', Moment(that.state.birthDate).format("YYYY-MM-DD"));
+            formData.append('gender', that.state.gender);
+            formData.append('mobile', that.state.mobile);
+            formData.append('subDistrictId', that.state.subDistrictId);
+            formData.append('subDistrictName', that.state.subDistrictName);
+            formData.append('districtId', that.state.districtId);
+            formData.append('districtName', that.state.districtName);
+            formData.append('provinceId', that.state.provinceId);
+            formData.append('provinceName', that.state.provinceName);
+            formData.append('zipcode', that.state.zipcode);
+            formData.append('companyId', that.state.companyId);
+            formData.append('companyCode', that.state.companyCode);
+            formData.append('positionId', that.state.positionId);
+            formData.append('positionName', that.state.positionName);
+            formData.append('location', that.state.location);
+            formData.append('locationName', that.state.locationName);
+            that.state.ImageSource.map((v, i) => {
+                let gallerys = {
+                    'uri': v.url,
+                    'type': v.type,
+                    'name': 'name_' + i + '.jpg',
+                };
+                formData.append('gallery[' + i + ']', gallerys)
+            })
+
+            props.indicatorControll(true)
+            Helper.post(BASEURL + REGISTER, formData, header, (results) => {
+                if (results.status == 'SUCCESS') {
+                    // that.ClearData()
+                    props.indicatorControll(false)
+                    alert(`${results.message}`)
+                } else {
+                    props.indicatorControll(false)
+                    alert(`${results.message}`)
+                }
+            })
+        } else {
+            alert(`กรุณาระบุข้อมูลที่สำคัญให้ครบถ้วนก่อนทำการบันทึก`)
+        }
+    }
+
+    ClearData() {
+        this.setState({
+            titleId: '',
+            titleName: '',
+            firstName: '',
+            lastName: '',
+            gender: '',
+            citizenId: '',
+            birthDate: new Date(),
+            mobile: '',
+            location: -1,
+            locationName: '',
+            provinceId: '',
+            provinceName: '',
+            districtId: '',
+            districtName: '',
+            subDistrictId: '',
+            subDistrictName: '',
+            zipcode: '',
+            companyId: '',
+            companyName: '',
+            positionId: '',
+            positionName: '',
+            gallery: "",
+            galleryup: "",
+            ImageSource: [],
+            title_data: [],
+            district_data: [],
+            subdistrict_data: [],
+            showImage: ''
         })
     }
 
@@ -347,7 +396,8 @@ class RegisterScreen extends React.Component {
                             returnKeyType='next'
                             onBlur={false}
                             autoCapitalize={false}
-                            onSubmitEditing={() => this.lastName.focus()} />
+                            onSubmitEditing={() => this.lastName.focus()}
+                            onChangeText={(text) => this.setState({ firstName: text })} />
                         <View style={styles.marginBetweenVertical}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`นามสกุล (ภาษาไทย)`}</Text>
@@ -359,11 +409,12 @@ class RegisterScreen extends React.Component {
                             returnKeyType='next'
                             onBlur={false}
                             autoCapitalize={false}
-                            onSubmitEditing={() => this.citizenId.focus()} />
+                            onSubmitEditing={() => this.citizenId.focus()}
+                            onChangeText={(text) => this.setState({ lastName: text })} />
                         <View style={styles.marginBetweenVertical}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`เพศ`}</Text>
-                            <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                            {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                         </View>
                         <RadioGroup
                             size={30}
@@ -393,26 +444,47 @@ class RegisterScreen extends React.Component {
                             placeholder=''
                             keyboardType='number-pad'
                             returnKeyType='next'
+                            maxLength={13}
                             onBlur={false}
                             autoCapitalize={false}
-                            onSubmitEditing={() => this.mobile.focus()} />
+                            onSubmitEditing={() => this.mobile.focus()}
+                            onChangeText={(text) => this.setState({ citizenId: text })} />
                         <View style={styles.marginBetweenVertical}></View>
+                        {/* <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
+                            <Text style={{ fontSize: 20 }}>{`วันเดือนปีเกิด`}</Text>
+                        </View>
+                        <TouchableOpacity style={{ flexDirection: 'row' }}
+                            onPress={
+                                () => this._showDateTimePicker()
+                            }>
+                            <TextInput style={[styles.inputSmall, styles.shadow, { color: 'black' }]}
+                                ref={(input) => { this.birthDate = input; }}
+                                placeholder=''
+                                returnKeyType='next'
+                                autoCapitalize={'none'}
+                                value={Moment(this.state.birthDate).format("DD/MM/YYYY")}
+                                editable={false} />
+                            <Icon name={'calendar'} size={30} color='gray' style={{ alignSelf: 'center', marginLeft: 10 }} />
+                        </TouchableOpacity>
+                        <View style={styles.marginBetweenVertical}></View> */}
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`เบอร์โทรศัพท์`}</Text>
-                            <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                            {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                         </View>
                         <TextInput style={[styles.input, styles.shadow]}
                             ref={(input) => { this.mobile = input; }}
                             placeholder=''
                             keyboardType='number-pad'
                             returnKeyType='next'
+                            maxLength={10}
                             onBlur={false}
                             autoCapitalize={false}
-                            onSubmitEditing={() => this.locationName.focus()} />
+                            onSubmitEditing={() => null}
+                            onChangeText={(text) => this.setState({ mobile: text })} />
                         <View style={styles.marginBetweenVertical}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`ช่องทางที่รับสมัคร`}</Text>
-                            <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                            {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                         </View>
                         <RadioGroup
                             size={30}
@@ -446,26 +518,28 @@ class RegisterScreen extends React.Component {
                                     placeholder='ระบุลิ้งค์เฟซบุ๊ค, ลิ้งค์ยูทูบ หรือชื่อตลาดที่ออกบูท'
                                     returnKeyType='next'
                                     onBlur={false}
-                                    autoCapitalize={false} />
+                                    autoCapitalize={false}
+                                    onChangeText={(text) => this.setState({ locationName: text })} />
                         }
 
                         <View style={styles.marginBetweenVertical}></View>
                         {
-                            this.state.channel == 3 ?
+                            this.state.location == 3 ?
                                 <View>
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                                         <Text style={{ fontSize: 20 }}>{`กรณีออกบูทตลาดนัด`}</Text>
-                                        <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                                        {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                                     </View>
                                     <TextInput style={[styles.input, styles.shadow]}
                                         ref={(input) => { this.locationName = input; }}
                                         placeholder='ชื่อตลาด'
                                         returnKeyType='next'
                                         onBlur={false}
-                                        autoCapitalize={false} />
+                                        autoCapitalize={false}
+                                        onChangeText={(text) => this.setState({ locationName: text })} />
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                                         <Text style={{ fontSize: 20 }}>{`จังหวัด`}</Text>
-                                        <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                                        {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                                     </View>
                                     <View style={[styles.input, styles.shadow, styles.center]}>
                                         <Picker
@@ -486,7 +560,7 @@ class RegisterScreen extends React.Component {
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                                         <Text style={{ fontSize: 20 }}>{`อำเภอ`}</Text>
-                                        <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                                        {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                                     </View>
                                     <View style={[styles.input, styles.shadow, styles.center]}>
                                         <Picker
@@ -507,7 +581,7 @@ class RegisterScreen extends React.Component {
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                                         <Text style={{ fontSize: 20 }}>{`ตำบล`}</Text>
-                                        <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                                        {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                                     </View>
                                     <View style={[styles.input, styles.shadow, styles.center]}>
                                         <Picker
@@ -533,7 +607,7 @@ class RegisterScreen extends React.Component {
                         <View style={styles.marginBetweenVertical}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`บริษัทที่สมัคร`}</Text>
-                            <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                            {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                         </View>
                         <View style={[styles.input, styles.shadow, styles.center]}>
                             <Picker
@@ -543,7 +617,7 @@ class RegisterScreen extends React.Component {
                                 itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
                                 itemTextStyle={{ color: 'gray', fontSize: 18 }}
                                 style={[{ color: 'gray', width: '100%' }]}
-                                selectedValue={this.state.company_id}
+                                selectedValue={this.state.companyId}
                                 onValueChange={(value, index) => this.onSelectCompany(value)} >
                                 {
                                     company.map((value, index) => {
@@ -555,7 +629,7 @@ class RegisterScreen extends React.Component {
                         <View style={styles.marginBetweenVertical}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`ตำแหน่งที่สมัคร`}</Text>
-                            <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                            {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                         </View>
                         <View style={[styles.input, styles.shadow, styles.center]}>
                             <Picker
@@ -565,7 +639,7 @@ class RegisterScreen extends React.Component {
                                 itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
                                 itemTextStyle={{ color: 'gray', fontSize: 18 }}
                                 style={[{ color: 'gray', width: '100%' }]}
-                                selectedValue={this.state.position_id}
+                                selectedValue={this.state.positionId}
                                 onValueChange={(value, index) => this.onSelectPosition(value)} >
                                 {
                                     position.map((value, index) => {
@@ -577,12 +651,26 @@ class RegisterScreen extends React.Component {
                         <View style={styles.marginBetweenVertical}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                             <Text style={{ fontSize: 20 }}>{`รูปถ่ายผู้สมัคร`}</Text>
-                            <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text>
+                            {/* <Text style={{ color: 'red', fontSize: 20, textAlignVertical: 'center' }}>{` *`}</Text> */}
                         </View>
                         {
                             this.state.ImageSource != '' ?
-                                <View style={[styles.center, { flex: 1 }]}>
-                                    <Image source={{ uri: this.state.ImageSource }} style={{ width: 180, height: 200, borderRadius: 8, backgroundColor: '#D3D5D1', alignItems: 'center', justifyContent: 'center' }} />
+                                <View style={{ width: 180, height: 200, alignSelf: 'center' }}>
+                                    <View style={{ width: 180, height: 200 }}>
+                                        <Image source={{ uri: this.state.ImageSource[0].url }} style={{ width: 180, height: 200, borderRadius: 8, backgroundColor: '#D3D5D1', alignItems: 'center', justifyContent: 'center' }} />
+                                    </View>
+                                    <View style={{ marginRight: 2, right: 0, position: 'absolute' }}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                this.setState({
+                                                    ImageSource: [],
+                                                    showImage: ''
+                                                });
+                                            }}
+                                        >
+                                            <Icon name='minus-circle' size={30} color="red" />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                                 :
                                 <View style={[styles.center, { flex: 1 }]}>
@@ -594,13 +682,17 @@ class RegisterScreen extends React.Component {
                         }
                         <View style={styles.marginBetweenVertical}></View>
                         <TouchableOpacity style={[styles.secondaryButton, styles.center]}
-                            // onPress={() => 
-                            // this.onSaveRegister()}
-                            >
+                            onPress={() => this.onSaveRegister()} >
                             <Text style={[{ color: secondaryColor, fontSize: 26 }, styles.bold]}>{`ส่งข้อมูลการสมัคร`}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                <DateTimePicker
+                    mode={'date'}
+                    is24Hour={true}
+                    isVisible={this.state.isDatePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker} />
             </View>
         )
     }
@@ -611,7 +703,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    indicatorControll
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen)

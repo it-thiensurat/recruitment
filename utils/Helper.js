@@ -16,9 +16,11 @@ const httpServices = {
             headers: header
         };
         axios.post(url, data, config).then(function (response) {
+            console.log(JSON.stringify(response))
             callback(response.data);
         }).catch(function (error) {
             callback(error);
+            console.log('catch: ' + JSON.stringify(error))
         });
     },
     delete:function (url, data, callback) {
