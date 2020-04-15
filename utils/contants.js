@@ -26,6 +26,7 @@ export const SUBDISTRICT_URL    = '/ServicesPHP/' + SERVER + '/HR/SubDistrict'
 export const COMPANY_URL        = '/ServicesPHP/' + SERVER + '/HR/Company'
 export const TITLE_URL          = '/ServicesPHP/' + SERVER + '/HR/Title'
 export const REGISTER           = '/ServicesPHP/' + SERVER + '/HR/Register'
+export const GET_REGISTER       = '/ServicesPHP/' + SERVER + '/HR/GetRegister'
 /**
  * End
  */

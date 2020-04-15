@@ -6,7 +6,8 @@ import {
     ImageBackground,
     TouchableOpacity,
     TextInput,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -54,7 +55,7 @@ class RegisterScreen extends React.Component {
         citizenId: '',
         birthDate: new Date(),
         mobile: '',
-        location: '0',
+        ChannelId: '0',
         locationName: '',
         provinceId: '',
         provinceName: '',
@@ -83,7 +84,7 @@ class RegisterScreen extends React.Component {
     }
 
     onSelectChannel(index, value) {
-        this.setState({ location: value })
+        this.setState({ ChannelId: value })
     }
 
     onSelectTitle(value) {
@@ -91,6 +92,7 @@ class RegisterScreen extends React.Component {
             const props = this.props.reducer
             let title = props.title
             let title_arr = title.filter((item) => item.Id == value)
+            // console.log(title_arr)
             this.setState({ titleId: value, titleName: title_arr[0].NameTh })
             // alert(JSON.stringify(this.state.titleName))
         } else {
@@ -163,9 +165,10 @@ class RegisterScreen extends React.Component {
             const props = this.props.reducer
             let company = props.company
             let company_arr = company.filter((item) => item.CompanyId == value)
-            alert(JSON.stringify(company_arr))
-            this.setState({ companyId: value, companyCode: company_arr[0].companyCode, companyName: company_arr[0].CompanyTh })
-            // alert(JSON.stringify(this.state.companyName))
+            // alert(JSON.stringify(company_arr))
+            // console.log(company_arr)
+            this.setState({ companyId: value, companyCode: company_arr[0].CompanyCode, companyName: company_arr[0].CompanyTh })
+            // alert(JSON.stringify(this.state.companyCode))
         } else {
             this.setState({ companyId: '', companyCode: '', companyName: '' })
         }
@@ -234,7 +237,7 @@ class RegisterScreen extends React.Component {
             formData.append('firstName', that.state.firstName);
             formData.append('lastName', that.state.lastName);
             formData.append('citizenId', that.state.citizenId);
-            formData.append('birthDate', Moment(that.state.birthDate).format("YYYY-MM-DD"));
+            // formData.append('birthDate', Moment(that.state.birthDate).format("YYYY-MM-DD"));
             formData.append('gender', that.state.gender);
             formData.append('mobile', that.state.mobile);
             formData.append('subDistrictId', that.state.subDistrictId);
@@ -245,10 +248,10 @@ class RegisterScreen extends React.Component {
             formData.append('provinceName', that.state.provinceName);
             formData.append('zipcode', that.state.zipcode);
             formData.append('companyId', that.state.companyId);
-            formData.append('companyCode', that.state.companyCode);
+            formData.append('companyName', that.state.companyCode);
             formData.append('positionId', that.state.positionId);
             formData.append('positionName', that.state.positionName);
-            formData.append('location', that.state.location);
+            formData.append('ChannelId', that.state.ChannelId);
             formData.append('locationName', that.state.locationName);
             that.state.ImageSource.map((v, i) => {
                 let gallerys = {
@@ -262,9 +265,19 @@ class RegisterScreen extends React.Component {
             props.indicatorControll(true)
             Helper.post(BASEURL + REGISTER, formData, header, (results) => {
                 if (results.status == 'SUCCESS') {
-                    // that.ClearData()
                     props.indicatorControll(false)
-                    alert(`${results.message}`)
+                    // alert(`${results.message}`)
+                    Alert.alert(
+                        //title
+                        'สถานะการบันทึกข้อมูล',
+                        //body
+                        `บันทึกข้อมูลเรียบร้อย`,
+                        [
+                          { text: 'OK', onPress: () => that.ClearData() },
+                        ],
+                        { cancelable: false }
+                        //clicking out side of alert will not cancel
+                      )
                 } else {
                     props.indicatorControll(false)
                     alert(`${results.message}`)
@@ -285,7 +298,7 @@ class RegisterScreen extends React.Component {
             citizenId: '',
             birthDate: new Date(),
             mobile: '',
-            location: -1,
+            ChannelId: '0',
             locationName: '',
             provinceId: '',
             provinceName: '',
@@ -510,7 +523,7 @@ class RegisterScreen extends React.Component {
                             </RadioButton>
                         </RadioGroup>
                         {
-                            this.state.location == -1 || this.state.location == 3 ?
+                            this.state.ChannelId == 0 || this.state.ChannelId == 3 ?
                                 null
                                 :
                                 <TextInput style={[styles.input, styles.shadow]}
@@ -524,7 +537,7 @@ class RegisterScreen extends React.Component {
 
                         <View style={styles.marginBetweenVertical}></View>
                         {
-                            this.state.location == 3 ?
+                            this.state.ChannelId == 3 ?
                                 <View>
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                                         <Text style={{ fontSize: 20 }}>{`กรณีออกบูทตลาดนัด`}</Text>
@@ -549,7 +562,7 @@ class RegisterScreen extends React.Component {
                                             itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
                                             itemTextStyle={{ color: 'gray', fontSize: 18 }}
                                             style={[{ color: 'gray', width: '100%' }]}
-                                            selectedValue={this.state.province_id}
+                                            selectedValue={this.state.provinceId}
                                             onValueChange={(value, index) => this.onSelectProvince(value)} >
                                             {
                                                 province.map((value, index) => {
@@ -570,7 +583,7 @@ class RegisterScreen extends React.Component {
                                             itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
                                             itemTextStyle={{ color: 'gray', fontSize: 18 }}
                                             style={[{ color: 'gray', width: '100%' }]}
-                                            selectedValue={this.state.district_id}
+                                            selectedValue={this.state.districtId}
                                             onValueChange={(value, index) => this.onSelectDistrict(value)} >
                                             {
                                                 this.state.district_data.map((value, index) => {
@@ -591,7 +604,7 @@ class RegisterScreen extends React.Component {
                                             itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
                                             itemTextStyle={{ color: 'gray', fontSize: 18 }}
                                             style={[{ color: 'gray', width: '100%' }]}
-                                            selectedValue={this.state.subdistrict_id}
+                                            selectedValue={this.state.subDistrictId}
                                             onValueChange={(value, index) => this.onSelectSubDistrict(value)} >
                                             {
                                                 this.state.subdistrict_data.map((value, index) => {

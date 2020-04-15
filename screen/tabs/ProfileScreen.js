@@ -45,8 +45,8 @@ class ProfileScreen extends React.Component {
 
     ComponentRight = () => {
         return (
-            <View style={[styles.center, { padding: 6 }]}>
-                <TouchableOpacity
+            <View>
+                {/* <TouchableOpacity
                     onPress={
                         async () => {
                             await StorageService.clear()
@@ -54,7 +54,7 @@ class ProfileScreen extends React.Component {
                         }
                     }>
                     <Icon name="power-off" color={lightColor} size={24} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         );
     }
@@ -138,6 +138,18 @@ class ProfileScreen extends React.Component {
                             <Text style={[styles.bold, { fontSize: 24 }]}>{`ตำแหน่ง`}</Text>
                             <Text style={[{ fontSize: 24, textAlignVertical: 'bottom' }]}>{`${props.userInfo.position}`}</Text>
                         </View>
+                    </View>
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
+                    <View style={styles.marginBetweenVertical}></View>
+                    <TouchableOpacity style={[styles.secondaryButton, styles.center]}
+                        onPress={
+                            async () => {
+                                await StorageService.clear()
+                                await this.props.navigation.replace('Login')
+                            }
+                        } >
+                        <Text style={[{ color: secondaryColor, fontSize: 26 }, styles.bold]}>{`ออกจากระบบ`}</Text>
+                    </TouchableOpacity>
                     </View>
                 </ScrollView>
             </View>
