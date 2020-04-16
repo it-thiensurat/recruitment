@@ -25,7 +25,8 @@ import {
     titleControll,
     companyControll,
     provinceControll,
-    positionControll
+    positionControll,
+    userInfoControll
 } from '../actions'
 
 import {
@@ -35,7 +36,8 @@ import {
     TITLE_URL,
     COMPANY_URL,
     PROVINCE_URL,
-    POSITION_URL
+    POSITION_URL,
+    LOGIN_URL
 } from '../utils/contants'
 
 import Helper from '../utils/Helper'
@@ -124,8 +126,9 @@ class SplashScreen extends React.Component {
         try {
             StorageService.get(TOKEN_KEY).then(obj => {
                 if (obj !== null) {
-                    props.tokenControll(obj)
-                    props.navigation.replace('Main')
+                    // props.tokenControll(obj)
+                    that.onLogin(obj)
+                    // props.navigation.replace('Main')
                 } else {
                     props.navigation.replace('Login')
                 }
@@ -135,6 +138,29 @@ class SplashScreen extends React.Component {
         } catch (error) {
 
         }
+    }
+
+    onLogin(token) {
+        let that = this
+        const props = that.props
+        let header = {
+            'Authorization': token,
+            'x-api-key': API_KEY
+        }
+
+        // props.indicatorControll(true)
+        Helper.post(BASEURL + LOGIN_URL, '', header, (results) => {
+            if (results.status == 'SUCCESS') {
+                props.tokenControll('save', results.token)
+                props.userInfoControll('save', results.data)
+                StorageService.set(TOKEN_KEY, results.token)
+                // props.indicatorControll(false)
+                props.navigation.replace('Main')
+            } else {
+                // props.indicatorControll(false)
+                alert(`${results.message}`)
+            }
+        })
     }
 
     handleBack = () => {
@@ -184,7 +210,8 @@ const mapDispatchToProps = {
     titleControll,
     companyControll,
     provinceControll,
-    positionControll
+    positionControll,
+    userInfoControll
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

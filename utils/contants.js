@@ -27,6 +27,7 @@ export const COMPANY_URL        = '/ServicesPHP/' + SERVER + '/HR/Company'
 export const TITLE_URL          = '/ServicesPHP/' + SERVER + '/HR/Title'
 export const REGISTER           = '/ServicesPHP/' + SERVER + '/HR/Register'
 export const GET_REGISTER       = '/ServicesPHP/' + SERVER + '/HR/GetRegister'
+export const GET_PERIOD         = '/ServicesPHP/' + SERVER + '/HR/GetPeriod'
 /**
  * End
  */

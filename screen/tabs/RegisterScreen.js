@@ -55,7 +55,7 @@ class RegisterScreen extends React.Component {
         citizenId: '',
         birthDate: new Date(),
         mobile: '',
-        ChannelId: '0',
+        ChannelId: '',
         locationName: '',
         provinceId: '',
         provinceName: '',
@@ -223,13 +223,14 @@ class RegisterScreen extends React.Component {
     onSaveRegister() {
         let that = this
         const props = that.props
+        let empId = props.reducer.empId
 
         let header = {
             'Authorization': props.reducer.token,
             'x-api-key': API_KEY,
         }
 
-        if (that.state.titleId != '0' && that.state.firstName != '' && that.state.lastName != '' && that.state.citizenId != '') {
+        if ( empId != '' && that.state.titleId != '0' && that.state.firstName != '' && that.state.lastName != '' && that.state.citizenId != '') {
 
             let formData = new FormData();
             formData.append('titleId', that.state.titleId);
@@ -409,6 +410,7 @@ class RegisterScreen extends React.Component {
                             returnKeyType='next'
                             onBlur={false}
                             autoCapitalize={false}
+                            value={this.state.firstName}
                             onSubmitEditing={() => this.lastName.focus()}
                             onChangeText={(text) => this.setState({ firstName: text })} />
                         <View style={styles.marginBetweenVertical}></View>
@@ -422,6 +424,7 @@ class RegisterScreen extends React.Component {
                             returnKeyType='next'
                             onBlur={false}
                             autoCapitalize={false}
+                            value={this.state.lastName}
                             onSubmitEditing={() => this.citizenId.focus()}
                             onChangeText={(text) => this.setState({ lastName: text })} />
                         <View style={styles.marginBetweenVertical}></View>
@@ -460,6 +463,7 @@ class RegisterScreen extends React.Component {
                             maxLength={13}
                             onBlur={false}
                             autoCapitalize={false}
+                            value={this.state.citizenId}
                             onSubmitEditing={() => this.mobile.focus()}
                             onChangeText={(text) => this.setState({ citizenId: text })} />
                         <View style={styles.marginBetweenVertical}></View>
@@ -492,6 +496,7 @@ class RegisterScreen extends React.Component {
                             maxLength={10}
                             onBlur={false}
                             autoCapitalize={false}
+                            value={this.state.mobile}
                             onSubmitEditing={() => null}
                             onChangeText={(text) => this.setState({ mobile: text })} />
                         <View style={styles.marginBetweenVertical}></View>
@@ -523,7 +528,7 @@ class RegisterScreen extends React.Component {
                             </RadioButton>
                         </RadioGroup>
                         {
-                            this.state.ChannelId == 0 || this.state.ChannelId == 3 ?
+                            this.state.ChannelId == null || this.state.ChannelId == 3 ?
                                 null
                                 :
                                 <TextInput style={[styles.input, styles.shadow]}
@@ -532,6 +537,7 @@ class RegisterScreen extends React.Component {
                                     returnKeyType='next'
                                     onBlur={false}
                                     autoCapitalize={false}
+                                    value={this.state.locationName}
                                     onChangeText={(text) => this.setState({ locationName: text })} />
                         }
 
@@ -549,6 +555,7 @@ class RegisterScreen extends React.Component {
                                         returnKeyType='next'
                                         onBlur={false}
                                         autoCapitalize={false}
+                                        value={this.state.locationName}
                                         onChangeText={(text) => this.setState({ locationName: text })} />
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 5 }}>
                                         <Text style={{ fontSize: 20 }}>{`จังหวัด`}</Text>
