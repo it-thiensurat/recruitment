@@ -168,7 +168,7 @@ class ListScreen extends React.Component {
         return (
             <View style={{ flex: 1, backgroundColor: tertiary }}>
                 <View style={{ width: DEVICE_WIDTH - 65, height: 420, justifyContent: 'center', backgroundColor: 'white', borderStyle: "solid", borderColor: primaryColor, borderWidth: 1, borderRadius: 5, padding: 7 }}>
-                    <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 20 }}>
+                    <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 10 }}>
                         {
                             item.Picture != null ?
                                 <Image style={{ width: 120, height: 120, resizeMode: "cover" }} source={{ uri: item.Picture }} />
@@ -176,27 +176,31 @@ class ListScreen extends React.Component {
                                 <Image style={{ width: 120, height: 120, resizeMode: "cover" }} source={img_nopic} />
                         }
                     </View>
-                    <View style={{ marginBottom: 5 }}>
+                    <View>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`ชื่อ - นามสกุล`}</Text>
-                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.Title}${item.Firstname} ${item.Lastname}`}</Text>
+                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.Title} ${item.Firstname} ${item.Lastname}`}</Text>
                     </View>
-                    <View style={{ marginBottom: 5 }}>
+                    <View>
+                        <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`หมายเลขโทรศัพท์`}</Text>
+                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.Mobile != "" ? item.Mobile : '-'}`}</Text>
+                    </View>
+                    <View>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`ช่องทางที่รับสมัคร`}</Text>
                         <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.LocationName != "" ? item.LocationName : '-'}`}</Text>
                     </View>
-                    <View style={{ marginBottom: 5 }}>
+                    <View>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`จังหวัดที่รับสมัคร`}</Text>
                         <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.Province != "" ? item.Province : '-'}`}
                             {/* {`${item.Province != "" || item.Province != null ? item.Province : '-'}`} */}
                             </Text>
                     </View>
-                    <View style={{ marginBottom: 5 }}>
+                    <View>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`บริษัทที่สมัคร`}</Text>
                         <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.CompanyTh != null ? item.CompanyTh : '-'}`}
                             {/* {`${item.CompanyTh != "" || item.CompanyTh != null ? item.CompanyTh : '-'}`} */}
                             </Text>
                     </View>
-                    <View style={{ marginBottom: 5 }}>
+                    <View>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`ตำแหน่งที่สมัคร`}</Text>
                         <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.PositionName != "" ? item.PositionName : '-'}`}
                             {/* {`${item.PositionName != "" || item.PositionName != null ? item.PositionName : '-'}`} */}
