@@ -18,6 +18,8 @@ import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import Carousel from 'react-native-snap-carousel'
 
+import img_nopic from '../../img/noProfile.png'
+
 import {
     TOKEN_KEY,
     darkColor,
@@ -69,7 +71,7 @@ class ListScreen extends React.Component {
 
         props.indicatorControll(true)
         Helper.post(BASEURL + GET_REGISTER, formData, header, (results) => {
-            console.log(results)
+            // console.log(results)
             if (results.status == 'SUCCESS') {
                 that.setState({ register: results.data, reg_month: results.count, reg_all: results.all })
                 props.indicatorControll(false)
@@ -148,15 +150,16 @@ class ListScreen extends React.Component {
     ComponentRight = () => {
         return (
             <View style={[styles.center, { padding: 6 }]}>
-                {/* <TouchableOpacity
+                <TouchableOpacity
                     onPress={
                         async () => {
                             await this.setState({ register: [], reg_month: '0', reg_all: '0' });
                             await this.getData();
+                            await this.getPeriod();
                         }
                     }>
                     <Icon name="history" color={lightColor} size={24} />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </View>
         );
     }
@@ -165,8 +168,13 @@ class ListScreen extends React.Component {
         return (
             <View style={{ flex: 1, backgroundColor: tertiary }}>
                 <View style={{ width: DEVICE_WIDTH - 65, height: 420, justifyContent: 'center', backgroundColor: 'white', borderStyle: "solid", borderColor: primaryColor, borderWidth: 1, borderRadius: 5, padding: 7 }}>
-                    <View style={{ alignSelf: 'center', marginTop: 15, marginBottom: 20 }}>
-                        <Image style={{ width: 120, height: 120, resizeMode: "cover" }} source={{ uri: item.Picture }} />
+                    <View style={{ alignSelf: 'center', marginTop: 10, marginBottom: 20 }}>
+                        {
+                            item.Picture != null ?
+                                <Image style={{ width: 120, height: 120, resizeMode: "cover" }} source={{ uri: item.Picture }} />
+                                :
+                                <Image style={{ width: 120, height: 120, resizeMode: "cover" }} source={img_nopic} />
+                        }
                     </View>
                     <View style={{ marginBottom: 5 }}>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`ชื่อ - นามสกุล`}</Text>
@@ -174,19 +182,25 @@ class ListScreen extends React.Component {
                     </View>
                     <View style={{ marginBottom: 5 }}>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`ช่องทางที่รับสมัคร`}</Text>
-                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.LocationName}`}</Text>
+                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.LocationName != "" ? item.LocationName : '-'}`}</Text>
                     </View>
                     <View style={{ marginBottom: 5 }}>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`จังหวัดที่รับสมัคร`}</Text>
-                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.Province != '' ? item.Province : '-'}`}</Text>
+                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.Province != "" ? item.Province : '-'}`}
+                            {/* {`${item.Province != "" || item.Province != null ? item.Province : '-'}`} */}
+                            </Text>
                     </View>
                     <View style={{ marginBottom: 5 }}>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`บริษัทที่สมัคร`}</Text>
-                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.CompanyTh != '' || item.CompanyTh != null ? item.CompanyTh : '-'}`}</Text>
+                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.CompanyTh != null ? item.CompanyTh : '-'}`}
+                            {/* {`${item.CompanyTh != "" || item.CompanyTh != null ? item.CompanyTh : '-'}`} */}
+                            </Text>
                     </View>
                     <View style={{ marginBottom: 5 }}>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`ตำแหน่งที่สมัคร`}</Text>
-                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.PositionName != '' ? item.PositionName : '-'}`}</Text>
+                        <Text style={[{ fontSize: 16, color: primaryColor, textAlignVertical: 'bottom' }]}>{`${item.PositionName != "" ? item.PositionName : '-'}`}
+                            {/* {`${item.PositionName != "" || item.PositionName != null ? item.PositionName : '-'}`} */}
+                            </Text>
                     </View>
                     <View style={{ marginBottom: 5 }}>
                         <Text style={[styles.bold, { fontSize: 18, color: primaryColor }]}>{`วันที่รับสมัคร`}</Text>
