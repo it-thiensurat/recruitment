@@ -1,4 +1,4 @@
-package com.recruitment;
+package th.co.thiensurat.recruitment;
 
 import android.app.Application;
 import android.content.Context;
