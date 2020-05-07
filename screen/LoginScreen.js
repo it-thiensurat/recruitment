@@ -67,43 +67,43 @@ class LoginScreen extends React.Component {
         })
     }
 
-    onLoginToken(token) {
-        let that = this
-        const props = that.props
-        let header = {
-            'Authorization': token,
-            'x-api-key': API_KEY
-        }
+    // onLoginToken(token) {
+    //     let that = this
+    //     const props = that.props
+    //     let header = {
+    //         'Authorization': token,
+    //         'x-api-key': API_KEY
+    //     }
 
-        props.indicatorControll(true)
-        Helper.post(BASEURL + LOGIN_URL, '', header, (results) => {
-            if (results.status == 'SUCCESS') {
-                props.tokenControll('save', results.token)
-                props.userInfoControll('save', results.data)
-                StorageService.set(TOKEN_KEY, results.token)
-                props.indicatorControll(false)
-                props.navigation.replace('Main')
-            } else {
-                props.indicatorControll(false)
-                alert(`${results.message}`)
-            }
-        })
-    }
+    //     props.indicatorControll(true)
+    //     Helper.post(BASEURL + LOGIN_URL, '', header, (results) => {
+    //         if (results.status == 'SUCCESS') {
+    //             props.tokenControll('save', results.token)
+    //             props.userInfoControll('save', results.data)
+    //             StorageService.set(TOKEN_KEY, results.token)
+    //             props.indicatorControll(false)
+    //             props.navigation.replace('Main')
+    //         } else {
+    //             props.indicatorControll(false)
+    //             alert(`${results.message}`)
+    //         }
+    //     })
+    // }
 
-    getStorageToken() {
-        let that = this
-        try {
-            StorageService.get(TOKEN_KEY).then(obj => {
-                if (obj !== null) {
-                    that.onLoginToken(obj)
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-        } catch (error) {
+    // getStorageToken() {
+    //     let that = this
+    //     try {
+    //         StorageService.get(TOKEN_KEY).then(obj => {
+    //             if (obj !== null) {
+    //                 that.onLoginToken(obj)
+    //             }
+    //         }).catch(function (error) {
+    //             console.log(error);
+    //         });
+    //     } catch (error) {
 
-        }
-    }
+    //     }
+    // }
 
     handleBack = () => {
         return true
@@ -116,8 +116,8 @@ class LoginScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    async componentDidMount() {
-        await this.getStorageToken()
+    componentDidMount() {
+        // await this.getStorageToken()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
