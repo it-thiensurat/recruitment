@@ -62,7 +62,7 @@ class LoginScreen extends React.Component {
                 props.navigation.replace('Main')
             } else {
                 props.indicatorControll(false)
-                alert(`${results.message}`)
+                alert(`login(${results.message})`)
             }
         })
     }
